@@ -2,9 +2,9 @@
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello</h1>
-    </div>
+    <>
+      <h1 className="bg-red-300">Hello World</h1>
+    </>
   );
 }
 
