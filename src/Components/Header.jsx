@@ -24,17 +24,17 @@ export default function Header() {
                 <div>
                     <ul className='flex space-x-10 font-poppins'>
                         <li
-                            className={`hover:font-medium cursor-pointer py-6 text-black ${pathMatches("/") && "text-black border-b-4 border-b-red-500"}`}
+                            className={`cursor-pointer py-6 text-black text-opacity-50 ${pathMatches("/") && " text-opacity-100 text-black border-b-4 border-b-red-500"}`}
                             onClick={() => navigate("/")}
                         >Home</li>
 
                         <li
-                            className={`hover:font-medium  cursor-pointer py-6 text-black ${pathMatches("/offers") && "text-black border-b-4 border-b-red-500"}`}
+                            className={`cursor-pointer py-6 text-black text-opacity-50 ${pathMatches("/offers") && "text-opacity-100 text-black border-b-4 border-b-red-500"}`}
                             onClick={() => navigate("/offers")}
                         >Offers</li>
 
                         <li
-                            className={`hover:font-medium  cursor-pointer py-6 text-black ${pathMatches("/sign-in") && "text-black border-b-4 border-b-red-500"}`}
+                            className={`cursor-pointer py-6 text-black text-opacity-50 ${pathMatches("/sign-in") && "text-opacity-100 text-black border-b-4 border-b-red-500"}`}
                             onClick={() => navigate("/sign-in")}
                         >Sign in</li>
                     </ul>
