@@ -47,6 +47,7 @@ export default function SignUp() {
         e.preventDefault();
 
         try {
+            console.log("sending...")
             // AUTHENTICATING=====================================================================
             // Gets auth instance
             const auth = getAuth();
@@ -80,7 +81,7 @@ export default function SignUp() {
             // Toasting the error
             toast.error("Something went wrong with registration");
         }
-
+        console.log("done...")
     }
 
 
