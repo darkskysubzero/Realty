@@ -6,7 +6,7 @@ import OAuth from "../Components/OAuth";
 
 // Firebase---
 import { db } from "../firebase";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 // React Router (for navigating to signin after signup)
@@ -54,6 +54,8 @@ export default function SignUp() {
 
             // Creates user with email and password
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+
+
 
             // Additional Information To Profile
             updateProfile(auth.currentUser, {
