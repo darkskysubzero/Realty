@@ -4,21 +4,35 @@ import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai"
 import { Link } from 'react-router-dom';
 import OAuth from "../Components/OAuth";
 
+// Firebase---
+import { db } from "../firebase";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+
+// React Router (for navigating to signin after signup)
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 export default function SignUp() {
 
+    // Form data 
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: "",
     })
-
     const { email, password, name } = formData;
 
+
+    // Password field state of visibility
     const [showPassword, setShowPassword] = useState(false);
 
+    // To navigate to other pages
+    const navigate = useNavigate();
 
 
+    // When user types in inputs
     const handleChange = (e) => {
         setFormData((prevState) => {
             return {
@@ -26,6 +40,47 @@ export default function SignUp() {
                 [e.target.id]: e.target.value,
             }
         })
+    }
+
+    // When user clicks on Sign Up button
+    const onSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            // AUTHENTICATING=====================================================================
+            // Gets auth instance
+            const auth = getAuth();
+
+            // Creates user with email and password
+            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+
+            // Additional Information To Profile
+            updateProfile(auth.currentUser, {
+                displayName: name
+            })
+            const user = userCredentials.user;
+
+            // SAVING USER TO DATABASE===========================================================
+            // Removing password property using destructuring
+            const dataWithoutPassword = { ...formData };
+            delete dataWithoutPassword.password;
+
+            // Adding timestamp from firebase to data object
+            dataWithoutPassword.timestamp = serverTimestamp();
+
+            // Saving to database (database, users table, user id), (data)
+            await setDoc(doc(db, "users", user.uid), dataWithoutPassword);
+
+            //Defined outside method (const navigate = useNavigate())
+            navigate("/");
+
+            toast.success("Signed up successfully!");
+
+        } catch (error) {
+            // Toasting the error
+            toast.error("Something went wrong with registration");
+        }
+
     }
 
 
@@ -42,7 +97,7 @@ export default function SignUp() {
 
                 {/* Form */}
                 <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-                    <form autoComplete="off">
+                    <form autoComplete="off" onSubmit={onSubmit}>
 
                         {/* Name Input */}
                         <input
