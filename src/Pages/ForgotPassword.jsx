@@ -3,6 +3,8 @@ import PasswordImage from '../Assets/password.jpg';
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai"
 import { Link } from 'react-router-dom';
 import OAuth from "../Components/OAuth";
+import { toast } from 'react-toastify';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 
 export default function ForgotPassword() {
@@ -14,6 +16,18 @@ export default function ForgotPassword() {
         setEmail(e.target.value);
     }
 
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const auth = getAuth();
+
+            await sendPasswordResetEmail(auth, email);
+            toast.success("Email Sent!");
+
+        } catch (error) {
+            toast.error("Could not find email");
+        }
+    }
 
     return (
         <section>
@@ -28,7 +42,7 @@ export default function ForgotPassword() {
 
                 {/* Form */}
                 <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-                    <form autoComplete="off">
+                    <form autoComplete="off" onSubmit={onSubmit}>
                         {/* Email Input */}
                         <input
                             type="email"

@@ -38,6 +38,8 @@ export default function SignIn() {
 
         try {
             const auth = getAuth();
+
+            //Get user credentials
             const userCredentials = await signInWithEmailAndPassword(auth, email, password);
 
             // If successful
