@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import LoginImage from '../Assets/login.jpg';
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import OAuth from "../Components/OAuth";
+import { toast } from 'react-toastify';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 
 export default function SignIn() {
@@ -16,6 +18,7 @@ export default function SignIn() {
 
     const [showPassword, setShowPassword] = useState(false);
 
+    const navigate = useNavigate();
 
 
     const handleChange = (e) => {
@@ -27,6 +30,28 @@ export default function SignIn() {
         })
     }
 
+
+
+    // When user clicks on sign in
+    const onSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const auth = getAuth();
+            const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+
+            // If successful
+            if (userCredentials.user) {
+                navigate("/")
+                toast.success("Logged in successfully!");
+            }
+
+
+
+        } catch (error) {
+            toast.error("Invalid login!");
+        }
+    }
 
     return (
         <section>
@@ -41,7 +66,7 @@ export default function SignIn() {
 
                 {/* Form */}
                 <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-                    <form autoComplete="off">
+                    <form autoComplete="off" onSubmit={onSubmit}>
                         {/* Email Input */}
                         <input
                             type="email"
@@ -82,7 +107,8 @@ export default function SignIn() {
                         </div>
 
                         {/* Sign In Button */}
-                        <button type='submit' className='w-full bg-blue-600 text-white px-7 py-3 font-medium uppercase rounded-md shadow-md hover:bg-blue-700 transition duration-200 ease-in-out hover:shadow-lg active:bg-blue-800 select-none'>Sign in</button>
+                        <button
+                            type='submit' className='w-full bg-blue-600 text-white px-7 py-3 font-medium uppercase rounded-md shadow-md hover:bg-blue-700 transition duration-200 ease-in-out hover:shadow-lg active:bg-blue-800 select-none'>Sign in</button>
 
                         {/* Or Line */}
                         <div className='
