@@ -9,6 +9,7 @@ export function useAuthStatus() {
     const [checkingStatus, setCheckingStatus] = useState(true);
 
 
+    //When app is loaded
     useEffect(() => {
         //Checking is user is logged in
         const auth = getAuth();

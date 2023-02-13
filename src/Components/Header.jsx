@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import logo from "../Assets/logo.png";
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function Header() {
 
@@ -11,6 +11,24 @@ export default function Header() {
 
     //To navigate between pages
     const navigate = useNavigate();
+
+    //To change name based on name
+    const [pageState, setPageState] = useState("Sign in");
+
+    //checking auth status for login status
+    const auth = getAuth();
+
+    useEffect(() => {
+
+        onAuthStateChanged(auth, (user) => {
+            //if user authenticated
+            if (user) {
+                setPageState("Profile");
+            } else {
+                setPageState("Sign in")
+            }
+        })
+    }, [auth]);
 
     return (
         <div className='bg-white border-b sticky top-0 z-50'>
@@ -34,9 +52,9 @@ export default function Header() {
                         >Offers</li>
 
                         <li
-                            className={`cursor-pointer py-6 text-black text-opacity-50 ${pathMatches("/sign-in") && "text-opacity-100 text-black border-b-4 border-b-red-500"}`}
-                            onClick={() => navigate("/sign-in")}
-                        >Sign in</li>
+                            className={`cursor-pointer py-6 text-black text-opacity-50 ${(pathMatches("/sign-in") || pathMatches("/profile")) && "text-opacity-100 text-black border-b-4 border-b-red-500"}`}
+                            onClick={() => navigate("/profile")}
+                        >{pageState}</li>
                     </ul>
                 </div>
             </header>
