@@ -5,6 +5,8 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { FcHome } from "react-icons/fc";
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
 
@@ -68,6 +70,7 @@ export default function Profile() {
             <section className='max-w-6xl mx-auto flex justify-center items-center flex-col'>
                 <h1 className='text-3xl text-center mt-6 font-bold font-poppins'>My Profile</h1>
                 <div className='w-full md:w-[50%] mt-6 px-3'>
+                    {/* Profile with name and email and edit options */}
                     <form>
                         {/* Name Input  */}
                         <input type="text" id='name' value={name}
@@ -99,6 +102,16 @@ export default function Profile() {
                             <p className='text-blue-600 hover:text-blue-800 transition ease-in-out duration-200 cursor-pointer' onClick={logout}>Sign out</p>
                         </div>
                     </form>
+
+                    {/* Button to add listing */}
+                    <button type='submit' className='w-full bg-blue-600  text-white uppercase px-7 py-3 text-sm font-medium   shadow-md rounded hover:bg-blue-700 hover:cursor-pointer transition-all duration-200 ease-in-out hover:shadow-lg active:bg-blue-800'>
+
+                        <Link to="/create-list" className='flex justify-center items-center gap-2'>
+                            <FcHome className='text-3xl bg-red-200 rounded-full p-1 border-2' />Sell or rent your home
+                        </Link>
+                    </button>
+
+
                 </div>
             </section>
         </>
